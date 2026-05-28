@@ -88,5 +88,7 @@ jobs:
       
       - name: Publish
         run: |
-          aws codeartifact login --tool twine --domain ${{env.DOMAIN}} --repository ${{ env.REPOSITORY }}
-          twine upload --skip-existing --verbose --repository codeartifact ${{env.WHEEL_DST}}/*
+          for region in us-east-1 us-east-2; do
+            aws codeartifact login --tool twine --domain ${{env.DOMAIN}} --repository ${{ env.REPOSITORY }} --region $region
+            twine upload --skip-existing --verbose --repository codeartifact ${{env.WHEEL_DST}}/*
+          done
